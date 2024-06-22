@@ -1,5 +1,5 @@
 import { env } from '@/config/env'
-import { server } from '@/shared/infra/http/server'
+import { server } from '@/infra/server'
 import http from 'http'
 
 const app = http.createServer(server.app)

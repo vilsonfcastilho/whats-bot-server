@@ -1,6 +1,5 @@
-import { mongo } from '@/shared/infra/databases/mongo-db'
-import { globalExceptionHandler } from '@/shared/infra/http/middlewares/global-exception-handler'
-import { router } from '@/shared/infra/http/routes'
+import { mongo } from '@/infra/databases/mongodb'
+import { whatsappweb } from '@/infra/services/whatsapp'
 import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
@@ -12,13 +11,7 @@ class Server {
 
   constructor() {
     this.setConfigurations()
-    this.setRoutes()
-    this.setErrorHandlers()
     this.setConnections()
-  }
-
-  async start() {
-    await this.setConnections()
   }
 
   async setConfigurations() {
@@ -26,16 +19,9 @@ class Server {
     this.app.use(cors({ origin: '*' }))
   }
 
-  async setRoutes() {
-    this.app.use('/api', router)
-  }
-
-  async setErrorHandlers() {
-    this.app.use(globalExceptionHandler)
-  }
-
   async setConnections() {
     await mongo.connect()
+    await whatsappweb.connect()
   }
 }
 

@@ -5,7 +5,7 @@ class Mongo {
   async connect() {
     await mongoose
       .connect(env().database_url, {
-        dbName: 'carbon_monitoring',
+        dbName: 'whats-bet',
       })
       .then(() => {
         console.log('⚡ MongoDB is connected!')
