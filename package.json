@@ -1,7 +1,7 @@
 {
   "name": "whats-bet-server",
   "version": "1.0.0",
-  "description": "🎰Create bet pools and play with your friends on your WhatsApp",
+  "description": "🎰Create bets and play with friends on your WhatsApp",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --files --transpile-only --ignore-watch node_modules src/index.ts",
