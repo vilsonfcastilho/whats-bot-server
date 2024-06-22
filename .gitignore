@@ -1,0 +1,7 @@
+# Unnecessary files
+node_modules
+dist
+
+# Keep environment variables and credentials out of version control
+.env
+.wwebjs_auth
