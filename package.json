@@ -1,5 +1,5 @@
 {
-  "name": "whats-bet-server",
+  "name": "whats-bot-server",
   "version": "1.0.0",
   "description": "🎰Create bets and play with friends on your WhatsApp",
   "main": "index.js",
