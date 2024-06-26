@@ -1,4 +1,4 @@
-# whats-bet-server
+# whats-bot-server
 
 Create bets and play with friends on your WhatsApp. 🎰
 
