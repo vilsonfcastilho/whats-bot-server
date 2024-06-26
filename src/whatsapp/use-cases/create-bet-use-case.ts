@@ -1,23 +1,20 @@
-import { Bet, IBet } from '@/models/bet.model'
+import { Bet } from '@/models/bet.model'
+import WAWebJS from 'whatsapp-web.js'
 
 interface IRequest {
+  message: WAWebJS.Message
   groupId: string
   authorId: string
   title: string
   options: string[]
 }
 
-interface IResponse {
-  message: string
-  data: IBet
-}
-
 class CreateBetUseCase {
-  async execute({ groupId, authorId, title, options }: IRequest): Promise<IResponse> {
-    if (!groupId || groupId === '') throw new Error('Parameter "groupId" is required.')
-    if (!authorId || authorId === '') throw new Error('Parameter "authorId" is required.')
-    if (!title || title === '') throw new Error('Parameter "title" is required.')
-    if (!options) throw new Error('Parameter "options" is required.')
+  async execute({ message, groupId, authorId, title, options }: IRequest): Promise<WAWebJS.Message> {
+    if (!groupId || groupId === '') return message.reply('❌ Parameter "groupId" is required.')
+    if (!authorId || authorId === '') return message.reply('❌ Parameter "authorId" is required.')
+    if (!title || title === '') return message.reply('❌ Parameter "title" is required.')
+    if (!options) return message.reply('❌ Parameter "options" is required.')
 
     const bet = await Bet.create({
       group_id: groupId,
@@ -26,10 +23,9 @@ class CreateBetUseCase {
       options,
     })
 
-    return {
-      message: `📢 New bet!!!\n\nID: ${bet._id}\nTitle: ${bet.title}\nOptions: ${bet.options.toString().replace(/,/g, ' | ')}`,
-      data: bet,
-    }
+    return message.reply(
+      `📢 New bet!!!\n\nID: ${bet._id}\nTitle: ${bet.title}\nOptions: ${bet.options.toString().replace(/,/g, ' | ')}`,
+    )
   }
 }
 

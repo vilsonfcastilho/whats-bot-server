@@ -1,30 +1,24 @@
-import { Bet, IBet } from '@/models/bet.model'
+import { Bet } from '@/models/bet.model'
 import { Types } from 'mongoose'
+import WAWebJS from 'whatsapp-web.js'
 
 interface IRequest {
+  message: WAWebJS.Message
   betId: string
 }
 
-interface IResponse {
-  message: string
-  data: IBet | null
-}
-
 class CloseBetUseCase {
-  async execute({ betId }: IRequest): Promise<IResponse> {
-    if (!betId || betId === '') throw new Error('Parameter "betId" is required.')
+  async execute({ message, betId }: IRequest): Promise<WAWebJS.Message> {
+    if (!betId || betId === '') return message.reply('❌ Parameter "betId" is required.')
 
     const bet = await Bet.findById(new Types.ObjectId(betId))
-    if (!bet) throw new Error('Bet not found.')
+    if (!bet) return message.reply('❌ Bet not found.')
 
     bet.is_open = false
     bet.updated_at = new Date()
     await bet.save()
 
-    return {
-      message: `⛔ Bet is close!\nThis bet is no longer accepting guesses!\n\nBet title: ${bet.title}`,
-      data: bet,
-    }
+    return message.reply(`⛔ Bet is close!\nThis bet is no longer accepting guesses!\n\nBet title: ${bet.title}`)
   }
 }
 
