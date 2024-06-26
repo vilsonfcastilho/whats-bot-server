@@ -9,7 +9,7 @@ export function onMessage(): void {
     const chat = await message.getChat()
 
     if (chat.isGroup) {
-      const [command, ...args] = message.body.split(' ')
+      const [command, ...args] = message.body?.split(' ')
 
       switch (command) {
         case '!help':
@@ -20,38 +20,40 @@ export function onMessage(): void {
 
         case '!createbet':
           // Example command: !createbet BetTitle option1,option2,option3
-          const createResponse = await CreateBet.execute({
+          await CreateBet.execute({
+            message,
             groupId: chat.id._serialized,
             authorId: String(message.author),
             title: args[0],
-            options: args[1].split(','),
+            options: args[1]?.split(','),
           })
-          message.reply(createResponse.message)
           break
 
         case '!joinbet':
           // Example command: !joinbet betId option
-          const joiResponse = await JoinBet.execute({
+          await JoinBet.execute({
+            message,
             betId: args[0],
             userId: String(message.author),
             option: args[1],
           })
-          message.reply(joiResponse.message)
           break
 
         case '!closebet':
           // Example command: !closebet betId
-          const closeResponse = await CloseBet.execute({ betId: args[0] })
-          message.reply(closeResponse.message)
+          await CloseBet.execute({
+            message,
+            betId: args[0],
+          })
           break
 
         case '!betresult':
           // Example command: !betresult betId result
-          const betResutResponse = await ShowBetResult.execute({
+          await ShowBetResult.execute({
+            message,
             betId: args[0],
             result: args[1],
           })
-          message.reply(betResutResponse.message)
           break
 
         // case '!chatgpt':
